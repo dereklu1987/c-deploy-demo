@@ -1,0 +1,44 @@
+name: Deploy new version
+
+# Only deploy when a new tag is pushed
+on: 
+  push:
+    tags:
+      - "v*.*.*"
+
+# Must match the project() name
+env:
+  APP_NAME: app
+
+# Allow this workflow to write back to the repository
+permissions:
+  contents: write
+
+# BUild binary and send to releases
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    name: Build and deploy
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t c-deploy-image .
+
+      - name: Create Docker container
+        run: docker create --name c-deploy-container c-deploy-image
+
+      - name: Copy out app
+        run: docker cp c-deploy-container:/${APP_NAME} ./${APP_NAME}
+
+      - name: Put environment variable into the env context
+        run: echo "app-name=${APP_NAME}" >> ${GITHUB_ENV}
+
+        name: Push to release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+          with:
+            files:${{ env.app_name }}
+            body_path: CHANGELOG.md
+
