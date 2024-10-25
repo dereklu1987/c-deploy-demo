@@ -8,7 +8,7 @@ RUN_TIMEOUT = 10.0          # Run timeout (seconds)
 
 # Create absolute paths
 code_path = os.path.join(TEST_DIR, CODE_FILE)
-app_path = os.path.join(TEST_DIR, "app.elf")
+app_path = os.path.join(TEST_DIR, "app")
 
 # Compile the program
 print("Building...")
