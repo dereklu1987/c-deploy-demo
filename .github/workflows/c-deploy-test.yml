@@ -30,7 +30,7 @@ jobs:
         run: docker create --name c-deploy-container c-deploy-image
 
       - name: Copy out app
-        run: docker cp c-deploy-container:/${APP_NAME} /${APP_NAME}
+        run: docker cp c-deploy-container:/${APP_NAME} ./${APP_NAME}
 
       - name: Put environment variable into the env context
         run: echo "app-name=${APP_NAME}" >> ${GITHUB_ENV}
