@@ -2,7 +2,7 @@
 
 int main()
 {
-    printf("Hello from V2.0.0");
+    printf("Hello from V3.0.0\n");
 
     return 0;
 }
